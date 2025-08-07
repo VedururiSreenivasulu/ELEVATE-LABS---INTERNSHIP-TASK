@@ -1,0 +1,27 @@
+from bs4 import BeautifulSoup
+import requests
+import csv
+import pandas as pd
+url="https://indianexpress.com/section/india/?ref=newlist_hp"
+p=requests.get(url)
+p
+soup=BeautifulSoup(p.content,"html.parser")
+content=soup.find_all("h2",class_="title")
+fheader=['headline']
+content
+itemfull=[]
+for item in content:
+  items=[]
+
+  headline_link = item.find("a") # Find the <a> tag within the h2
+  if headline_link is not None:
+      headline_text = headline_link.text # Extract the text
+
+      items.append(headline_text)
+
+  else:
+      items.append("headline is NA")
+  itemfull.append(items)
+# Define headers before creating the DataFrame
+fheader=['headline']
+pd.DataFrame(itemfull, columns=fheader).to_csv("hdl.csv", index=False) # Add columns and remove index
